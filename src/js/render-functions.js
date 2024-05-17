@@ -2,27 +2,13 @@ export function updateGallery(images) {
   const galleryElement = document.querySelector('.gallery');
   galleryElement.innerHTML = '';
 
-  const lightboxElements = images.reduce((acc, image) => {
-    const imageElement = document.createElement('img');
-    imageElement.src = image.webformatURL;
-    imageElement.alt = image.tags;
-
-    imageElement.addEventListener('click', () => {
-      const lightbox = new SimpleLightbox('.gallery a');
-      lightbox.refresh();
-    });
-
-    const linkElement = document.createElement('a');
-    linkElement.href = image.largeImageURL;
-    linkElement.setAttribute('data-lightbox', 'gallery');
-    linkElement.appendChild(imageElement);
-
-    acc.push(linkElement);
-    return acc;
-  }, []);
-
-  lightboxElements.forEach(element => {
-    galleryElement.appendChild(element);
+  images.forEach(image => {
+    const imageHTML = `
+      <a href="${image.largeImageURL}" data-lightbox="gallery">
+        <img src="${image.webformatURL}" alt="${image.tags}" />
+      </a>
+    `;
+    galleryElement.insertAdjacentHTML('beforeend', imageHTML);
   });
 
   const lightbox = new SimpleLightbox('.gallery a');
